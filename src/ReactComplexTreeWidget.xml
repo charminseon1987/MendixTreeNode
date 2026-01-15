@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="aiden.reactcomplextreewidget.ReactComplexTreeWidget"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>React Complex Tree Widget</name>
+    <description>React Complex Tree Widget</description>
+    <icon />
+    <properties>
+        <!-- Service call properties -->
+
+        <propertyGroup caption="Service call">
+            <property key="dataChangeDateAttr" type="attribute">
+                <caption>Data change date</caption>
+                <description>
+                    Update the date in your logic to make the widget call the web service. (Pluggable widgets are
+                    rendered VERY often!)
+                </description>
+                <attributeTypes>
+                    <attributeType name="DateTime" />
+                </attributeTypes>
+            </property>
+            <property key="serviceUrl" type="expression">
+                <caption>URL for the service</caption>
+                <description>
+                    Only calls to the app backend are supported. So it must be in the format /rest/*yourServiceName*
+                </description>
+                <returnType type="String" />
+            </property>
+        </propertyGroup>
+
+        <!-- Button properties -->
+
+        <propertyGroup caption="Buttons">
+            <propertyGroup caption="Collapse all">
+                <property key="collapseAllButtonCaption" type="textTemplate" required="false">
+                    <caption>Caption</caption>
+                    <description />
+                </property>
+                <property key="collapseAllButtonIcon" type="icon" required="false">
+                    <caption>Icon</caption>
+                    <description />
+                </property>
+                <property
+                    key="collapseAllButtonClass"
+                    type="string"
+                    defaultValue="tree-widget-button-collapse-all btn mx-button"
+                >
+                    <caption>Class</caption>
+                    <description>Separate multiple values using a space</description>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Root Button">
+                <property key="RootButtonCaption" type="textTemplate" required="false">
+                    <caption>Caption</caption>
+                    <description />
+                </property>
+                <property key="RootButtonIcon" type="icon" required="false">
+                    <caption>Icon</caption>
+                    <description />
+                </property>
+                <property
+                    key="RootButtonClass"
+                    type="string"
+                    defaultValue="tree-widget-button-collapse-all btn mx-button"
+                >
+                    <caption>Class</caption>
+                    <description>Separate multiple values using a space</description>
+                </property>
+            </propertyGroup>
+
+            <propertyGroup caption="Expand all">
+                <property key="showExpandAllButton" type="expression" required="false">
+                    <caption>Show button</caption>
+                    <description>
+                        Only useful when the entire tree is loaded, not for lazy load. With lazy load it would trigger a
+                        lot of missing node events and that would only load the next level, not all levels
+                    </description>
+                    <returnType type="Boolean" />
+                </property>
+                <property key="expandAllButtonIcon" type="icon" required="false">
+                    <caption>Icon</caption>
+                    <description />
+                </property>
+                <property key="expandAllButtonCaption" type="textTemplate" required="false">
+                    <caption>Caption</caption>
+                    <description />
+                </property>
+                <property
+                    key="expandAllButtonClass"
+                    type="string"
+                    defaultValue="tree-widget-button-expand-all btn mx-button"
+                >
+                    <caption>Class</caption>
+                    <description>Separate multiple values using a space</description>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+
+        <!-- Configuration properties -->
+
+        <propertyGroup caption="Configuration">
+            <property key="toggleExpandedIconOnly" type="boolean" defaultValue="false">
+                <caption>Toggle expanded with icon only</caption>
+                <description>
+                    Yes: Collapse/expand only by clicking on the icon. No: Toggle expanded state by clicking anywhere on
+                    the node
+                </description>
+            </property>
+        </propertyGroup>
+
+        <!-- Rename node properties -->
+
+        <propertyGroup caption="Rename node">
+            <property key="allowNodeRename" type="boolean" defaultValue="false">
+                <caption>Allow node rename</caption>
+                <description>
+                    If enabled, the user can press F2 to edit the name of the node directly in the tree
+                </description>
+            </property>
+            <property key="renamedNodeIDAttr" type="attribute" required="false">
+                <caption>Renamed node ID</caption>
+                <description>The ID of the node that was renamed</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="newNodeNameAttr" type="attribute" required="false">
+                <caption>New node name</caption>
+                <description>
+                    The attribute to receive the changed node name. Use it to update the node referenced using the Event
+                    node ID property
+                </description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onNodeRenamedAction" type="action" required="false">
+                <caption>On node renamed action</caption>
+                <description />
+            </property>
+        </propertyGroup>
+
+        <!-- Events properties -->
+
+        <propertyGroup caption="Events">
+            <property key="selectedNodeIDsAttr" type="attribute" required="false">
+                <caption>Selected node IDs</caption>
+                <description>Contains a comma separated list of all selected node IDs</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onSelectionChangedAction" type="action" required="false">
+                <caption>On selection changed action</caption>
+                <description />
+            </property>
+            <property key="missingNodeIDsAttr" type="attribute" required="false">
+                <caption>Missing node IDs</caption>
+                <description>
+                    Use for lazy loading. Contains a comma separated list of node IDs of the expanded node and its child
+                    nodes
+                </description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onMissingNodesAction" type="action" required="false">
+                <caption>On missing nodes action</caption>
+                <description />
+            </property>
+        </propertyGroup>
+
+        <!-- Drag/drop properties -->
+
+        <propertyGroup caption="Drag and drop">
+            <property key="allowDragReordering" type="boolean" defaultValue="false">
+                <caption>Allow reordering</caption>
+                <description>If enabled, the user can reorder child nodes within the parent</description>
+            </property>
+            <property key="allowDragMove" type="boolean" defaultValue="false">
+                <caption>Allow move</caption>
+                <description>If enabled, the user can move nodes anywhere in the tree</description>
+            </property>
+            <property key="draggedNodeIDsAttr" type="attribute" required="false">
+                <caption>Dragged node IDs</caption>
+                <description>Contains a comma separated list of the IDs of the dragged nodes</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="dropTargetAttr" type="attribute" required="false">
+                <caption>Drop target info</caption>
+                <description>The drop target info. This is a JSON object as string</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="onDropAction" type="action" required="false">
+                <caption>On drop action</caption>
+                <description />
+            </property>
+        </propertyGroup>
+
+        <!-- Advanced properties -->
+
+        <propertyGroup caption="Advanced">
+            <property key="logToConsole" type="boolean" defaultValue="false">
+                <caption>Console logging</caption>
+                <description>
+                    Log widget progress to the console. Useful to get timing on data retrieval etc
+                </description>
+            </property>
+            <property key="dumpServiceResponseInConsole" type="boolean" defaultValue="false">
+                <caption>Dump service response</caption>
+                <description>Dump the response of the service call to the console</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
